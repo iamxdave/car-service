@@ -1,0 +1,43 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
+
+version: '3.4'
+
+services:
+  backend:
+    image: backend
+    container_name: bd_net
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8088:80"
+    depends_on:
+      - "db"
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=root;Password=root;Server=db;Port=5432;Database=car-service; IntegratedSecurity=true;Pooling=true;
+      - ASPNETCORE_URLS=http://+:80
+  db:
+    image: postgres:latest
+    container_name: db_postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: car-service
+    ports:
+      - "5433:5432"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: dev_pma
+    restart: always
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 5432
+      PMA_ARBITRARY: 1
+    ports:
+      - 8183:81
+volumes:
+  dbdata:
