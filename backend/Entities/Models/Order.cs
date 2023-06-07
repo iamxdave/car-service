@@ -10,7 +10,9 @@ namespace Entities.Models
         [Required]
         public int IdCustomer { get; set; }
         [Required]
-        public int IdSTask { get; set; }
+        public int IdAssistance { get; set; }
+        [Required]
+        public int IdMechanic { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
         [Required]
@@ -21,9 +23,10 @@ namespace Entities.Models
         public OrderStatus Status { get; set; }
         [ForeignKey(nameof(IdCustomer))]
         public Person Customer { get; set; }
-        [ForeignKey(nameof(IdSTask))]
-        public STask STask { get; set; }
-        public ICollection<MechanicOrder> MechanicOrders { get; set; }
+        [ForeignKey(nameof(IdAssistance))]
+        public Assistance Assistance { get; set; }
+        [ForeignKey(nameof(IdMechanic))]
+        public Mechanic Mechanic { get; set; }
     }
 
     public enum OrderStatus

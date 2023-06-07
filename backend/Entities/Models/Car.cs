@@ -8,18 +8,14 @@ namespace Entities.Models
         [Key]
         public int IdCar { get; set; }
         [Required]
-        public int IdCustomer { get; set; }
-        [Required]
         public int IdService { get; set; }
         [Required]
         public string Model { get; set; }
         [Required]
         public CarType Type { get; set; }
-        [ForeignKey(nameof(IdCustomer))]
-        public virtual Person Customer { get; set; }
         [ForeignKey(nameof(IdService))]
-        public virtual Service Service { get; set; }
-        public virtual IEnumerable<STask> STasks { get; set; }
+        public virtual Workshop Service { get; set; }
+        public virtual IEnumerable<Assistance> Assistances { get; set; }
 
     }
 

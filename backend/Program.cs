@@ -1,7 +1,12 @@
-using System.Security.Cryptography.X509Certificates;
 using Entities.Data;
 using Microsoft.EntityFrameworkCore;
-using Services;
+using Services.Orders;
+using Services.Mechanics;
+using backend.Services.Customers;
+using backend.Helpers.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,13 +17,43 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddDbContext<CarServiceContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IMechanicService, MechanicService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            var jwtToken = builder.Configuration.GetValue<string>("JwtToken") ?? throw new ArgumentNullException("JwtToken not found");
+
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtToken)),
+            };
+        });
+
+
+builder.Services.AddCors(options =>
+{
+    var frontendURL = builder.Configuration.GetValue<string>("frontend_url") ?? throw new ArgumentNullException("Frontend_url not found");
+
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -31,6 +66,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

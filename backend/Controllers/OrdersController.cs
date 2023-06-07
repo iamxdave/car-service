@@ -1,6 +1,7 @@
 using DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Services;
+using Microsoft.EntityFrameworkCore;
+using Services.Orders;
 
 namespace Controllers
 {
@@ -18,21 +19,29 @@ namespace Controllers
         }
 
         [HttpGet(Name = "GetAllOrders")]
-        public IEnumerable<OrderGet> GetOrders()
+        public async Task<IActionResult> GetOrders()
         {
             var orders = _service.GetOrders();
 
             if (orders == null || !orders.Any())
             {
-                return Enumerable.Empty<OrderGet>();
+                return NotFound();
             }
 
-            return orders.Select(e => new OrderGet
+            var dtoOrders = await orders.Select(e => new OrderGet
             {
                 DateCreated = e.DateCreated,
                 DateCompleted = e.DateCompleted,
                 Cost = e.Cost
-            }).ToList();
+            }).ToListAsync();
+
+            return Ok(dtoOrders);
         }
+
+        // [HttpPost(Name = "PostOrder")]
+        // public async Task<IActionResult> PostOrder(OrderGet) 
+        // {
+            
+        // }
     }
 }

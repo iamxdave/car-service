@@ -6,12 +6,12 @@ namespace Entities.Models
     public class Employee : Person
     {
         [Required]
-        public int IdService { get; set; }
+        public int IdWorkshop { get; set; }
         [Required]
         public DateTime EmploymentDate { get; set; }
         [Required]
         public decimal MonthlySalary { get; set; }
-        [ForeignKey(nameof(IdService))]
-        public virtual Service Service { get; set; }
+        [ForeignKey(nameof(IdWorkshop))]
+        public virtual Workshop Workshop { get; set; }
     }
 }

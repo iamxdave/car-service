@@ -10,6 +10,6 @@ namespace Entities.Models
         public string Name { get; set; }
         [Required]
         public decimal Cost { get; set; }
-        public virtual IEnumerable<CarRepairPart> CarRepairParts { get; set; }
+        public virtual IEnumerable<RepairPart> RepairParts { get; set; }
     }
 }

@@ -5,8 +5,8 @@ namespace Entities.Models
     public class Mechanic : Employee
     {
         [Required]
-        public int RepairedCarsCount { get; set; }
-        public virtual IEnumerable<MechanicSTask> MechanicSTasks { get; set; }
-        public virtual IEnumerable<MechanicOrder> MechanicOrders { get; set; }
+        public List<DateTime> BookedDates { get; set; }
+        public virtual IEnumerable<MechanicAssistance> MechanicAssistance{ get; set; }
+        public virtual IEnumerable<Order> Orders { get; set; }
     }
 }
