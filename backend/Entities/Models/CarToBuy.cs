@@ -7,7 +7,7 @@ using Entities.Models;
 
 namespace Entities.Models
 {
-    public class CarForSale : Car
+    public class CarToBuy : Car
     {
         [Required]
         public int Cost { get; set; }

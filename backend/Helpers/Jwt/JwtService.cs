@@ -15,7 +15,7 @@ namespace backend.Helpers.Jwt
             jwt_token = _configuration.GetValue<string>("JwtToken") ?? throw new ArgumentNullException("JwtToken not found"); 
         }
 
-        public string Generate(int id)
+        public string Generate(Guid id)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt_token));
             var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);

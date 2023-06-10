@@ -8,7 +8,11 @@ namespace Entities.Models
         [Key]
         public int IdRepairPart { get; set; }
         [Required]
-        public int IdRepair { get; set; }
+        public int Quality { get; set; }
+        [Required]
+        public int Cost { get; set; }
+        [Required]
+        public Guid IdRepair { get; set; }
         [Required]
         public int IdPart { get; set; }
         [ForeignKey(nameof(IdRepair))]

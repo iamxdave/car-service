@@ -5,6 +5,6 @@ namespace Services.Mechanics
     public interface IMechanicService : IDBService
     {
         public IQueryable<Mechanic> GetMechanics();
-        public Task<Mechanic?> GetMechanicByIdAsync(int id);
+        public Task<Mechanic?> GetMechanicByIdAsync(Guid id);
     }
 }

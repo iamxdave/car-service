@@ -1,11 +1,8 @@
 using backend.DTOs;
 using backend.Helpers.Jwt;
-using backend.Services.Customers;
+using backend.Services.Users;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Controllers
 {
@@ -13,10 +10,10 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly ICustomerService _service;
+        private readonly IUserService _service;
         private readonly IJwtService _jwtService;
 
-        public AuthController(ICustomerService service, IJwtService jwtService)
+        public AuthController(IUserService service, IJwtService jwtService)
         {
             _service = service;
             _jwtService = jwtService;
@@ -32,11 +29,10 @@ namespace backend.Controllers
                 });
             }
 
-            var customer = new Customer
+            var customer = new User
             {
                 Name = body.Name,
                 Surname = body.Surname,
-                BirthDate = body.BirthDate,
                 Email = body.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(body.Password)
             };
@@ -50,18 +46,18 @@ namespace backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto body) 
         {
-            var customer = await _service.GetByEmail(body.Email);
+            var user = await _service.GetByEmail(body.Email);
 
-            if(customer == null)
+            if(user == null)
                 return Unauthorized(new {message = "Invalid credentials"});
 
-            if(!BCrypt.Net.BCrypt.Verify(body.Password, customer.Password))
+            if(!BCrypt.Net.BCrypt.Verify(body.Password, user.Password))
                 return Unauthorized(new {message = "Invalid credentials"});
             
             //TODO
             // if(body.IsRemebered)
             // {
-                var jwt = _jwtService.Generate(customer.IdPerson);
+                var jwt = _jwtService.Generate(user.IdPerson);
 
                 Response.Cookies.Append("jwt", jwt, new CookieOptions
                 {
@@ -87,7 +83,7 @@ namespace backend.Controllers
 
                 var token = _jwtService.Verify(jwt);
                 
-                int userId = int.Parse(token.Issuer);
+                Guid userId = Guid.Parse(token.Issuer);
 
                 var user = await _service.GetById(userId);
 
@@ -100,7 +96,12 @@ namespace backend.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("jwt");
+            Response.Cookies.Delete("jwt", new CookieOptions
+                {
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                }
+            );
 
             return Ok(new
             {

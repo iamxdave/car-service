@@ -12,9 +12,9 @@ namespace Services.Orders
             _context = context;
         }
 
-        public IQueryable<Order> GetOrders()
+        public IQueryable<Order> GetUserOrders(Guid idUser)
         {
-            return _context.Orders;
+            return _context.Orders.Where(e => e.IdUser == idUser);
         }
     }
 }

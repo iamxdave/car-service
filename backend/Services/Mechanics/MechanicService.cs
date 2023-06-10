@@ -19,7 +19,7 @@ namespace Services.Mechanics
             return _context.Mechanics;
         }
 
-        public async Task<Mechanic?> GetMechanicByIdAsync(int id)
+        public async Task<Mechanic?> GetMechanicByIdAsync(Guid id)
         {
             return await _context.Mechanics.FirstOrDefaultAsync(e => e.IdPerson == id);
         }

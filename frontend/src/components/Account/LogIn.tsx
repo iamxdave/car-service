@@ -5,7 +5,7 @@ import { UserContext, UserContextType } from "../../App";
 import axios, { AxiosError, AxiosResponse, AxiosResponseHeaders } from "axios";
 import { urlLogin, urlUser } from "../../endpoints";
 import { Input, Ripple, initTE } from "tw-elements";
-import logo from '../../assets/logo.png'
+import logo from "../../assets/logo.png";
 
 initTE({ Input, Ripple });
 
@@ -15,7 +15,7 @@ interface Credit {
   remember: boolean;
 }
 
-export default function SignIn() {
+export default function LogIn() {
   const [formData, setFormData] = useState<Credit>({
     email: "",
     password: "",
@@ -24,6 +24,8 @@ export default function SignIn() {
   const { user, updateUser } = useContext(UserContext) as UserContextType;
   const rememberCheckboxRef = useRef<HTMLInputElement>(null);
   const [validation, setValidation] = useState("");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     axios.defaults.withCredentials = true;
@@ -34,6 +36,7 @@ export default function SignIn() {
         if (response.status === 200) {
           const user = response.data;
           updateUser(user);
+          navigate('/');
         }
       })
       .catch((reason: AxiosError) => {
@@ -55,6 +58,7 @@ export default function SignIn() {
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
           updateUser(credit);
+          navigate('/');
         }
       })
       .catch((reason: AxiosError) => {
@@ -89,7 +93,7 @@ export default function SignIn() {
         <div className="max-w-lg h-full px-8 py-24">
           <div className="flex h-full items-center justify-center">
             <div className="w-full">
-              <div className="text-2xl text-center mb-6">Sign In</div>
+              <div className="text-2xl text-center mb-6">Log In</div>
               <form onSubmit={handleSubmit}>
                 <div className="mb-6">
                   <label
@@ -153,7 +157,7 @@ export default function SignIn() {
                   </div>
 
                   <Link
-                    to="/main"
+                    to="/singup"
                     className="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
                   >
                     Sign up

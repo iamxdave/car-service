@@ -6,23 +6,14 @@ namespace Entities.Models
     public class Car
     {
         [Key]
-        public int IdCar { get; set; }
+        public Guid IdCar { get; set; }
         [Required]
-        public int IdService { get; set; }
+        public int IdWorkshop { get; set; }
         [Required]
         public string Model { get; set; }
-        [Required]
-        public CarType Type { get; set; }
-        [ForeignKey(nameof(IdService))]
-        public virtual Workshop Service { get; set; }
-        public virtual IEnumerable<Assistance> Assistances { get; set; }
+        [ForeignKey(nameof(IdWorkshop))]
+        public virtual Workshop Workshop { get; set; }
+        public virtual IEnumerable<Order> Orders { get; set; }
 
-    }
-
-    public enum CarType
-    {
-        Sedan,
-        SUV,
-        Truck
     }
 }

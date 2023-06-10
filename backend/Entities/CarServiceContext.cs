@@ -5,23 +5,18 @@ namespace Entities.Data
 {
     public class CarServiceContext : DbContext
     {
-        public DbSet<Call> Calls { get; set; }
         public DbSet<Car> Cars { get; set; }
-        public DbSet<CarForSale> CarForSales { get; set; }
+        public DbSet<CarToBuy> CarToBuys { get; set; }
         public DbSet<CarToRepair> CarToRepairs { get; set; }
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<RepairPart> RepairParts { get; set; }
         public DbSet<Sale> Sales { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<CustomerServiceRepresentative> CSRepresentatives { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Mechanic> Mechanics { get; set; }
-        public DbSet<MechanicAssistance> MechanicAssistance { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Part> Parts { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<Workshop> Services { get; set; }
-        public DbSet<Assistance> Assistances { get; set; }
+        public DbSet<Workshop> Workshops { get; set; }
 
         public CarServiceContext(DbContextOptions<CarServiceContext> options)
             : base(options)
@@ -32,7 +27,7 @@ namespace Entities.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Customer>()
+            modelBuilder.Entity<User>()
                 .HasIndex(e => e.Email)
                 .IsUnique();
 
@@ -103,13 +98,13 @@ namespace Entities.Data
                 );
             });
 
-            modelBuilder.Entity<CarForSale>(builder =>
+            modelBuilder.Entity<CarToBuy>(builder =>
             {
                 builder.HasData(
-                    new CarForSale { IdCar = 1, IdService = 1, Model = "Astra", Type = CarType.Sedan, Cost = 50000, Warranty = 3},
-                    new CarForSale { IdCar = 2, IdService = 2, Model = "Golf", Type = CarType.SUV, Cost = 40000, Warranty = 4},
-                    new CarForSale { IdCar = 3, IdService = 3, Model = "Civic", Type = CarType.Sedan, Cost = 20000, Warranty = 2},
-                    new CarForSale { IdCar = 4, IdService = 3, Model = "Fiesta", Type = CarType.SUV, Cost = 30000, Warranty = 5}
+                    new CarToBuy { IdCar = Guid.NewGuid(), IdWorkshop = 1, Model = "Astra", Cost = 50000, Warranty = 3},
+                    new CarToBuy { IdCar = Guid.NewGuid(), IdWorkshop = 2, Model = "Golf", Cost = 40000, Warranty = 4},
+                    new CarToBuy { IdCar = Guid.NewGuid(), IdWorkshop = 3, Model = "Civic", Cost = 20000, Warranty = 2},
+                    new CarToBuy { IdCar = Guid.NewGuid(), IdWorkshop = 3, Model = "Fiesta", Cost = 30000, Warranty = 5}
                 );
             });
 
@@ -126,25 +121,25 @@ namespace Entities.Data
             modelBuilder.Entity<Mechanic>(builder =>
             {
                 builder.HasData(
-                    new Mechanic { IdPerson = 1, IdWorkshop = 1, Name = "Adam", Surname = "Nowak", BirthDate = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2020, 1, 1), MonthlySalary = 3000, BookedDates = new List<DateTime>() },
-                    new Mechanic { IdPerson = 2, IdWorkshop = 1, Name = "Ewa", Surname = "Kowalska", BirthDate = new DateTime(1992, 2, 1), EmploymentDate = new DateTime(2021, 2, 1), MonthlySalary = 3200, BookedDates = new List<DateTime>() },
-                    new Mechanic { IdPerson = 3, IdWorkshop = 2, Name = "Tomasz", Surname = "Lis", BirthDate = new DateTime(1988, 3, 1), EmploymentDate = new DateTime(2022, 3, 1), MonthlySalary = 3500, BookedDates = new List<DateTime>() }
+                    new Mechanic { IdPerson = Guid.NewGuid(), IdWorkshop = 1, Name = "Adam", Surname = "Nowak", BirthDate = new DateTime(1990, 1, 1), BookedDates = new List<DateTime>() },
+                    new Mechanic { IdPerson = Guid.NewGuid(), IdWorkshop = 1, Name = "Ewa", Surname = "Kowalska", BirthDate = new DateTime(1992, 2, 1), BookedDates = new List<DateTime>() },
+                    new Mechanic { IdPerson = Guid.NewGuid(), IdWorkshop = 2, Name = "Tomasz", Surname = "Lis", BirthDate = new DateTime(1988, 3, 1), BookedDates = new List<DateTime>() }
                 );
             });
 
             modelBuilder.Entity<Part>(builder =>
             {
                 builder.HasData(
-                    new Part { IdPart = 1, Name = "Brake pads", Cost = 50 },
-                    new Part { IdPart = 2, Name = "Oil filter", Cost = 10 },
-                    new Part { IdPart = 3, Name = "Spark plugs", Cost = 20 },
-                    new Part { IdPart = 4, Name = "Air filter", Cost = 15 },
-                    new Part { IdPart = 5, Name = "Alternator", Cost = 150 },
-                    new Part { IdPart = 6, Name = "Battery", Cost = 80 },
-                    new Part { IdPart = 7, Name = "Radiator", Cost = 100 },
-                    new Part { IdPart = 8, Name = "Water pump", Cost = 70 },
-                    new Part { IdPart = 9, Name = "Starter motor", Cost = 120 },
-                    new Part { IdPart = 10, Name = "Fuel pump", Cost = 90 }
+                    new Part { IdPart = 1, Name = "Brake pads"},
+                    new Part { IdPart = 2, Name = "Oil filter"},
+                    new Part { IdPart = 3, Name = "Spark plugs"},
+                    new Part { IdPart = 4, Name = "Air filter"},
+                    new Part { IdPart = 5, Name = "Alternator"},
+                    new Part { IdPart = 6, Name = "Battery"},
+                    new Part { IdPart = 7, Name = "Radiator"},
+                    new Part { IdPart = 8, Name = "Water pump"},
+                    new Part { IdPart = 9, Name = "Starter motor"},
+                    new Part { IdPart = 10, Name = "Fuel pump"}
                 );
             });
 

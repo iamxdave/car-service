@@ -33,7 +33,7 @@ namespace backend.Controllers
             }
 
             if(start == default(DateTime) || end == default(DateTime)) {
-               var dtoMechanics = mechanics.Select(e => new MechanicGet
+               var dtoMechanics = mechanics.Select(e => new MechanicDto
                 {
                     Name = e.Name,
                     Surname = e.Surname,
@@ -60,7 +60,7 @@ namespace backend.Controllers
                 return NotFound("No available mechanics in the database");
             }
 
-            var dtoAvailableMechanics = availableMechanics.Select(e => new MechanicGet
+            var dtoAvailableMechanics = availableMechanics.Select(e => new MechanicDto
             {
                 Name = e.Name,
                 Surname = e.Surname,
@@ -71,7 +71,7 @@ namespace backend.Controllers
         }
 
         [HttpPut("{idMechanic}")]
-        public async Task<IActionResult> PutMechanic(int idMechanic, MechanicPut body) 
+        public async Task<IActionResult> PutMechanic(Guid idMechanic, DateTime date) 
         {
             var mechanic = await _service.GetMechanicByIdAsync(idMechanic);
 
@@ -79,12 +79,12 @@ namespace backend.Controllers
             {
                 return NotFound();
             }
-            if(mechanic.BookedDates.Any(date => body.BookedDates.Contains(date)))
+            if(mechanic.BookedDates.Any(d => d.Day == date.Day))
             {
                 return Conflict();
             }
 
-            mechanic.BookedDates.AddRange(body.BookedDates);
+            mechanic.BookedDates.Add(date);
 
             await _service.SaveChangesAsync();
 

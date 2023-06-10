@@ -2,11 +2,13 @@ using Entities.Data;
 using Microsoft.EntityFrameworkCore;
 using Services.Orders;
 using Services.Mechanics;
-using backend.Services.Customers;
+using backend.Services.Users;
+using backend.Services.Cars;
 using backend.Helpers.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,8 @@ builder.Services.AddDbContext<CarServiceContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMechanicService, MechanicService>();
 

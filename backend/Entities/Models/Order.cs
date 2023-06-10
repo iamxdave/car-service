@@ -6,13 +6,13 @@ namespace Entities.Models
     public class Order
     {
         [Key]
-        public int IdOrder { get; set; }
+        public Guid IdOrder { get; set; }
         [Required]
-        public int IdCustomer { get; set; }
+        public Guid IdUser { get; set; }
         [Required]
-        public int IdAssistance { get; set; }
+        public Guid IdMechanic { get; set; }
         [Required]
-        public int IdMechanic { get; set; }
+        public Guid IdCar { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
         [Required]
@@ -21,12 +21,12 @@ namespace Entities.Models
         public decimal Cost { get; set; }
         [Required]
         public OrderStatus Status { get; set; }
-        [ForeignKey(nameof(IdCustomer))]
-        public Person Customer { get; set; }
-        [ForeignKey(nameof(IdAssistance))]
-        public Assistance Assistance { get; set; }
+        [ForeignKey(nameof(IdUser))]
+        public virtual Person Customer { get; set; }
         [ForeignKey(nameof(IdMechanic))]
-        public Mechanic Mechanic { get; set; }
+        public virtual Mechanic Mechanic { get; set; }
+        [ForeignKey(nameof(IdCar))]
+        public virtual Car Car { get; set; }
     }
 
     public enum OrderStatus

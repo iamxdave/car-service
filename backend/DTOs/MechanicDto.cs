@@ -1,6 +1,6 @@
 namespace backend.DTOs
 {
-    public class MechanicGet
+    public class MechanicDto
     {
         public string Name { get; set; }
         public string Surname { get; set; }

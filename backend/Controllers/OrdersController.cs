@@ -18,17 +18,17 @@ namespace Controllers
             _configuration = configuration;
         }
 
-        [HttpGet(Name = "GetAllOrders")]
-        public async Task<IActionResult> GetOrders()
+        [HttpGet("{idUser}")]
+        public async Task<IActionResult> GetOrders(Guid idUser)
         {
-            var orders = _service.GetOrders();
+            var orders = _service.GetUserOrders(idUser);
 
             if (orders == null || !orders.Any())
             {
                 return NotFound();
             }
 
-            var dtoOrders = await orders.Select(e => new OrderGet
+            var dtoOrders = await orders.Select(e => new OrderDto
             {
                 DateCreated = e.DateCreated,
                 DateCompleted = e.DateCompleted,

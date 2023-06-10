@@ -2,12 +2,17 @@ import React, { ReactNode, CSSProperties } from "react";
 import pattern from "../../assets/pattern.jpg";
 
 interface ContainerProps {
-  children: ReactNode;
+  id: string,
+  height: string,
+  bgColor: string,
+  children: ReactNode
 }
 
-const Container = ({ children }: ContainerProps) => {
+const Container = ({id, height, bgColor, children}: ContainerProps) => {
+  const classes = `${height} ${bgColor}`;
+  
   return (
-    <div className="bg-neutral-900">
+    <div id={id} className={`flex flex-col ${classes}`}>
       {children}
     </div>
   );

@@ -17,7 +17,7 @@ namespace Entities.Models
         public DateTime OpeningTime { get; } = new DateTime(1, 1, 1, 9, 0, 0).ToUniversalTime();
         [Required]
         public DateTime ClosingTime { get; } = new DateTime(1, 1, 1, 22, 0, 0).ToUniversalTime();
-        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<Mechanic> Mechanics { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
     }
 }

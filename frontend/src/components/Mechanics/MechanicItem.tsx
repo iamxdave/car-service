@@ -1,22 +1,11 @@
+import Mechanic from "../../types/Mechanic";
 
-import React from 'react';
-
-interface Props {
-  name: string;
-  surname: string;
-}
-
-type MechanicItemType = {
-  name: string,
-  surname: string
-}
-
-const MechanicItem = ({ name, surname }:MechanicItemType) => {
+const MechanicItem = ({mechanic}:{mechanic:Mechanic}) => {
 
   return (
     <>
-      {name}
-      {surname}
+      {mechanic.name}
+      {mechanic.surname}
     </>
   );
 };

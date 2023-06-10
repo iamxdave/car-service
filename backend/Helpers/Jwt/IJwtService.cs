@@ -8,7 +8,7 @@ namespace backend.Helpers.Jwt
 {
     public interface IJwtService
     {
-        public string Generate(int id);
+        public string Generate(Guid id);
         public JwtSecurityToken Verify(string jwt);
     }
 }

@@ -5,7 +5,7 @@ namespace Entities.Models
     public class Person
     {
         [Key]
-        public int IdPerson { get; set; }
+        public Guid IdPerson { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

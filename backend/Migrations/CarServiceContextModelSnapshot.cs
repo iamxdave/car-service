@@ -23,102 +23,31 @@ namespace backend.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Entities.Models.Assistance", b =>
-                {
-                    b.Property<int>("IdAssistance")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdAssistance"));
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("IdCar")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdOrder")
-                        .HasColumnType("integer");
-
-                    b.HasKey("IdAssistance");
-
-                    b.HasIndex("IdCar");
-
-                    b.ToTable("Assistances");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Assistance");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Entities.Models.Call", b =>
-                {
-                    b.Property<int>("IdCall")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdCall"));
-
-                    b.Property<int?>("CustomerIdPerson")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int>("IdCustomer")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdCustomerServiceRepresentative")
-                        .HasColumnType("integer");
-
-                    b.HasKey("IdCall");
-
-                    b.HasIndex("CustomerIdPerson");
-
-                    b.HasIndex("IdCustomer");
-
-                    b.HasIndex("IdCustomerServiceRepresentative");
-
-                    b.ToTable("Calls");
-                });
-
             modelBuilder.Entity("Entities.Models.Car", b =>
                 {
-                    b.Property<int>("IdCar")
+                    b.Property<Guid>("IdCar")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdCar"));
-
-                    b.Property<int?>("CustomerIdPerson")
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("IdService")
+                    b.Property<int>("IdWorkshop")
                         .HasColumnType("integer");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("UserIdPerson")
+                        .HasColumnType("uuid");
 
                     b.HasKey("IdCar");
 
-                    b.HasIndex("CustomerIdPerson");
+                    b.HasIndex("IdWorkshop");
 
-                    b.HasIndex("IdService");
+                    b.HasIndex("UserIdPerson");
 
                     b.ToTable("Cars");
 
@@ -127,42 +56,14 @@ namespace backend.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Entities.Models.MechanicAssistance", b =>
-                {
-                    b.Property<int>("IdMechanicSTask")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdMechanicSTask"));
-
-                    b.Property<int>("IdAssistance")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdMechanic")
-                        .HasColumnType("integer");
-
-                    b.HasKey("IdMechanicSTask");
-
-                    b.HasIndex("IdAssistance");
-
-                    b.HasIndex("IdMechanic");
-
-                    b.ToTable("MechanicAssistance");
-                });
-
             modelBuilder.Entity("Entities.Models.Order", b =>
                 {
-                    b.Property<int>("IdOrder")
+                    b.Property<Guid>("IdOrder")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdOrder"));
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
-
-                    b.Property<int?>("CustomerIdPerson")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DateCompleted")
                         .IsRequired()
@@ -171,29 +72,40 @@ namespace backend.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("IdAssistance")
-                        .HasColumnType("integer");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("IdCustomer")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("IdCar")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("IdMechanic")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("IdMechanic")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("UserIdPerson")
+                        .HasColumnType("uuid");
+
                     b.HasKey("IdOrder");
 
-                    b.HasIndex("CustomerIdPerson");
-
-                    b.HasIndex("IdAssistance");
-
-                    b.HasIndex("IdCustomer");
+                    b.HasIndex("IdCar");
 
                     b.HasIndex("IdMechanic");
 
+                    b.HasIndex("IdUser");
+
+                    b.HasIndex("UserIdPerson");
+
                     b.ToTable("Orders");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Order");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Entities.Models.Part", b =>
@@ -203,9 +115,6 @@ namespace backend.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdPart"));
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -219,72 +128,60 @@ namespace backend.Migrations
                         new
                         {
                             IdPart = 1,
-                            Cost = 50m,
                             Name = "Brake pads"
                         },
                         new
                         {
                             IdPart = 2,
-                            Cost = 10m,
                             Name = "Oil filter"
                         },
                         new
                         {
                             IdPart = 3,
-                            Cost = 20m,
                             Name = "Spark plugs"
                         },
                         new
                         {
                             IdPart = 4,
-                            Cost = 15m,
                             Name = "Air filter"
                         },
                         new
                         {
                             IdPart = 5,
-                            Cost = 150m,
                             Name = "Alternator"
                         },
                         new
                         {
                             IdPart = 6,
-                            Cost = 80m,
                             Name = "Battery"
                         },
                         new
                         {
                             IdPart = 7,
-                            Cost = 100m,
                             Name = "Radiator"
                         },
                         new
                         {
                             IdPart = 8,
-                            Cost = 70m,
                             Name = "Water pump"
                         },
                         new
                         {
                             IdPart = 9,
-                            Cost = 120m,
                             Name = "Starter motor"
                         },
                         new
                         {
                             IdPart = 10,
-                            Cost = 90m,
                             Name = "Fuel pump"
                         });
                 });
 
             modelBuilder.Entity("Entities.Models.Person", b =>
                 {
-                    b.Property<int>("IdPerson")
+                    b.Property<Guid>("IdPerson")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdPerson"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
@@ -318,10 +215,16 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdRepairPart"));
 
+                    b.Property<int>("Cost")
+                        .HasColumnType("integer");
+
                     b.Property<int>("IdPart")
                         .HasColumnType("integer");
 
-                    b.Property<int>("IdRepair")
+                    b.Property<Guid>("IdRepair")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Quality")
                         .HasColumnType("integer");
 
                     b.HasKey("IdRepairPart");
@@ -355,7 +258,7 @@ namespace backend.Migrations
 
                     b.HasKey("IdWorkshop");
 
-                    b.ToTable("Services");
+                    b.ToTable("Workshops");
 
                     b.HasData(
                         new
@@ -381,27 +284,7 @@ namespace backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Models.Repair", b =>
-                {
-                    b.HasBaseType("Entities.Models.Assistance");
-
-                    b.HasDiscriminator().HasValue("Repair");
-                });
-
-            modelBuilder.Entity("Entities.Models.Sale", b =>
-                {
-                    b.HasBaseType("Entities.Models.Assistance");
-
-                    b.Property<int>("ManufacturerWarranty")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.HasDiscriminator().HasValue("Sale");
-                });
-
-            modelBuilder.Entity("Entities.Models.CarForSale", b =>
+            modelBuilder.Entity("Entities.Models.CarToBuy", b =>
                 {
                     b.HasBaseType("Entities.Models.Car");
 
@@ -411,42 +294,38 @@ namespace backend.Migrations
                     b.Property<int>("Warranty")
                         .HasColumnType("integer");
 
-                    b.HasDiscriminator().HasValue("CarForSale");
+                    b.HasDiscriminator().HasValue("CarToBuy");
 
                     b.HasData(
                         new
                         {
-                            IdCar = 1,
-                            IdService = 1,
+                            IdCar = new Guid("3c454538-b2b0-4f00-9086-3b3d0b26830a"),
+                            IdWorkshop = 1,
                             Model = "Astra",
-                            Type = 0,
                             Cost = 50000,
                             Warranty = 3
                         },
                         new
                         {
-                            IdCar = 2,
-                            IdService = 2,
+                            IdCar = new Guid("42a52d8f-42e4-43a3-ba48-79f89226b2b3"),
+                            IdWorkshop = 2,
                             Model = "Golf",
-                            Type = 1,
                             Cost = 40000,
                             Warranty = 4
                         },
                         new
                         {
-                            IdCar = 3,
-                            IdService = 3,
+                            IdCar = new Guid("636f9723-8eeb-4c07-a039-31056ace4132"),
+                            IdWorkshop = 3,
                             Model = "Civic",
-                            Type = 0,
                             Cost = 20000,
                             Warranty = 2
                         },
                         new
                         {
-                            IdCar = 4,
-                            IdService = 3,
+                            IdCar = new Guid("08a1f32f-f738-43fb-a34b-f99f0d8b0842"),
+                            IdWorkshop = 3,
                             Model = "Fiesta",
-                            Type = 1,
                             Cost = 30000,
                             Warranty = 5
                         });
@@ -456,21 +335,89 @@ namespace backend.Migrations
                 {
                     b.HasBaseType("Entities.Models.Car");
 
-                    b.Property<int>("IdCustomer")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("IdCustomer");
+                    b.Property<string>("RegistrationNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasIndex("IdUser");
 
                     b.HasDiscriminator().HasValue("CarToRepair");
                 });
 
-            modelBuilder.Entity("Entities.Models.Customer", b =>
+            modelBuilder.Entity("Entities.Models.Repair", b =>
+                {
+                    b.HasBaseType("Entities.Models.Order");
+
+                    b.Property<int>("TotalPartCost")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("Repair");
+                });
+
+            modelBuilder.Entity("Entities.Models.Sale", b =>
+                {
+                    b.HasBaseType("Entities.Models.Order");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("SaleCost")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("Sale");
+                });
+
+            modelBuilder.Entity("Entities.Models.Mechanic", b =>
                 {
                     b.HasBaseType("Entities.Models.Person");
 
-                    b.Property<string>("Address")
+                    b.Property<List<DateTime>>("BookedDates")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("timestamp without time zone[]");
+
+                    b.Property<int>("IdWorkshop")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("IdWorkshop");
+
+                    b.HasDiscriminator().HasValue("Mechanic");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPerson = new Guid("62988d48-7f31-4edb-a188-95dff0a2c4b5"),
+                            BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Adam",
+                            Surname = "Nowak",
+                            BookedDates = new List<DateTime>(),
+                            IdWorkshop = 1
+                        },
+                        new
+                        {
+                            IdPerson = new Guid("1d736f70-76e7-4dab-8815-34e1acd76837"),
+                            BirthDate = new DateTime(1992, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Ewa",
+                            Surname = "Kowalska",
+                            BookedDates = new List<DateTime>(),
+                            IdWorkshop = 1
+                        },
+                        new
+                        {
+                            IdPerson = new Guid("40b00aee-114a-4cc4-b257-317ddf222d41"),
+                            BirthDate = new DateTime(1988, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Tomasz",
+                            Surname = "Lis",
+                            BookedDates = new List<DateTime>(),
+                            IdWorkshop = 2
+                        });
+                });
+
+            modelBuilder.Entity("Entities.Models.User", b =>
+                {
+                    b.HasBaseType("Entities.Models.Person");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -480,183 +427,52 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasDiscriminator().HasValue("Customer");
-                });
-
-            modelBuilder.Entity("Entities.Models.Employee", b =>
-                {
-                    b.HasBaseType("Entities.Models.Person");
-
-                    b.Property<DateTime>("EmploymentDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("IdWorkshop")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("MonthlySalary")
-                        .HasColumnType("numeric");
-
-                    b.HasIndex("IdWorkshop");
-
-                    b.HasDiscriminator().HasValue("Employee");
-                });
-
-            modelBuilder.Entity("Entities.Models.CustomerServiceRepresentative", b =>
-                {
-                    b.HasBaseType("Entities.Models.Employee");
-
-                    b.Property<int>("ProcessedCallsCount")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("CustomerServiceRepresentative");
-                });
-
-            modelBuilder.Entity("Entities.Models.Mechanic", b =>
-                {
-                    b.HasBaseType("Entities.Models.Employee");
-
-                    b.Property<List<DateTime>>("BookedDates")
-                        .IsRequired()
-                        .HasColumnType("timestamp without time zone[]");
-
-                    b.HasDiscriminator().HasValue("Mechanic");
-
-                    b.HasData(
-                        new
-                        {
-                            IdPerson = 1,
-                            BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Adam",
-                            Surname = "Nowak",
-                            EmploymentDate = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdWorkshop = 1,
-                            MonthlySalary = 3000m,
-                            BookedDates = new List<DateTime>()
-                        },
-                        new
-                        {
-                            IdPerson = 2,
-                            BirthDate = new DateTime(1992, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Ewa",
-                            Surname = "Kowalska",
-                            EmploymentDate = new DateTime(2021, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdWorkshop = 1,
-                            MonthlySalary = 3200m,
-                            BookedDates = new List<DateTime>()
-                        },
-                        new
-                        {
-                            IdPerson = 3,
-                            BirthDate = new DateTime(1988, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Tomasz",
-                            Surname = "Lis",
-                            EmploymentDate = new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IdWorkshop = 2,
-                            MonthlySalary = 3500m,
-                            BookedDates = new List<DateTime>()
-                        });
-                });
-
-            modelBuilder.Entity("Entities.Models.Assistance", b =>
-                {
-                    b.HasOne("Entities.Models.Car", "Car")
-                        .WithMany("Assistances")
-                        .HasForeignKey("IdCar")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
-            modelBuilder.Entity("Entities.Models.Call", b =>
-                {
-                    b.HasOne("Entities.Models.Customer", null)
-                        .WithMany("Calls")
-                        .HasForeignKey("CustomerIdPerson");
-
-                    b.HasOne("Entities.Models.Person", "Customer")
-                        .WithMany()
-                        .HasForeignKey("IdCustomer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.CustomerServiceRepresentative", "CustomerServiceRepresentative")
-                        .WithMany("Calls")
-                        .HasForeignKey("IdCustomerServiceRepresentative")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("CustomerServiceRepresentative");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Entities.Models.Car", b =>
                 {
-                    b.HasOne("Entities.Models.Customer", null)
+                    b.HasOne("Entities.Models.Workshop", "Workshop")
                         .WithMany("Cars")
-                        .HasForeignKey("CustomerIdPerson");
+                        .HasForeignKey("IdWorkshop")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Entities.Models.Workshop", "Service")
+                    b.HasOne("Entities.Models.User", null)
                         .WithMany("Cars")
-                        .HasForeignKey("IdService")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserIdPerson");
 
-                    b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("Entities.Models.MechanicAssistance", b =>
-                {
-                    b.HasOne("Entities.Models.Assistance", "Assistance")
-                        .WithMany("MechanicAssistance")
-                        .HasForeignKey("IdAssistance")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Models.Mechanic", "Mechanic")
-                        .WithMany("MechanicAssistance")
-                        .HasForeignKey("IdMechanic")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Assistance");
-
-                    b.Navigation("Mechanic");
+                    b.Navigation("Workshop");
                 });
 
             modelBuilder.Entity("Entities.Models.Order", b =>
                 {
-                    b.HasOne("Entities.Models.Customer", null)
+                    b.HasOne("Entities.Models.Car", "Car")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerIdPerson");
+                        .HasForeignKey("IdCar")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Entities.Models.Assistance", "Assistance")
-                        .WithMany()
-                        .HasForeignKey("IdAssistance")
+                    b.HasOne("Entities.Models.Mechanic", "Mechanic")
+                        .WithMany("Orders")
+                        .HasForeignKey("IdMechanic")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entities.Models.Person", "Customer")
                         .WithMany()
-                        .HasForeignKey("IdCustomer")
+                        .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Mechanic", "Mechanic")
+                    b.HasOne("Entities.Models.User", null)
                         .WithMany("Orders")
-                        .HasForeignKey("IdMechanic")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserIdPerson");
 
-                    b.Navigation("Assistance");
+                    b.Navigation("Car");
 
                     b.Navigation("Customer");
 
@@ -684,19 +500,19 @@ namespace backend.Migrations
 
             modelBuilder.Entity("Entities.Models.CarToRepair", b =>
                 {
-                    b.HasOne("Entities.Models.Person", "Customer")
+                    b.HasOne("Entities.Models.Person", "User")
                         .WithMany()
-                        .HasForeignKey("IdCustomer")
+                        .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Entities.Models.Employee", b =>
+            modelBuilder.Entity("Entities.Models.Mechanic", b =>
                 {
                     b.HasOne("Entities.Models.Workshop", "Workshop")
-                        .WithMany("Employees")
+                        .WithMany("Mechanics")
                         .HasForeignKey("IdWorkshop")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -704,14 +520,9 @@ namespace backend.Migrations
                     b.Navigation("Workshop");
                 });
 
-            modelBuilder.Entity("Entities.Models.Assistance", b =>
-                {
-                    b.Navigation("MechanicAssistance");
-                });
-
             modelBuilder.Entity("Entities.Models.Car", b =>
                 {
-                    b.Navigation("Assistances");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Entities.Models.Part", b =>
@@ -723,7 +534,7 @@ namespace backend.Migrations
                 {
                     b.Navigation("Cars");
 
-                    b.Navigation("Employees");
+                    b.Navigation("Mechanics");
                 });
 
             modelBuilder.Entity("Entities.Models.Repair", b =>
@@ -731,23 +542,14 @@ namespace backend.Migrations
                     b.Navigation("RepairParts");
                 });
 
-            modelBuilder.Entity("Entities.Models.Customer", b =>
+            modelBuilder.Entity("Entities.Models.Mechanic", b =>
                 {
-                    b.Navigation("Calls");
-
-                    b.Navigation("Cars");
-
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("Entities.Models.CustomerServiceRepresentative", b =>
+            modelBuilder.Entity("Entities.Models.User", b =>
                 {
-                    b.Navigation("Calls");
-                });
-
-            modelBuilder.Entity("Entities.Models.Mechanic", b =>
-                {
-                    b.Navigation("MechanicAssistance");
+                    b.Navigation("Cars");
 
                     b.Navigation("Orders");
                 });

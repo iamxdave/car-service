@@ -1,6 +1,6 @@
 namespace DTOs
 {
-    public class OrderGet
+    public class OrderDto
     {
         public DateTime DateCreated { get; set; }
         public DateTime? DateCompleted { get; set; }

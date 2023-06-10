@@ -22,7 +22,7 @@ const MechanicList = () => {
           'Authorization': `Bearer ${cookies.jwt}`
         }
       })
-      .then((response: AxiosResponse<any>) => {
+      .then((response: AxiosResponse<any>) => {    
         setMechanics(response.data);
       })
       .catch((reason: AxiosError) => {
@@ -37,7 +37,7 @@ const MechanicList = () => {
       {mechanics
         ? mechanics.map((mechanic) => {
             return (
-              <MechanicItem name={mechanic.name} surname={mechanic.surname} />
+              <MechanicItem mechanic={mechanic} />
             );
           })
         : null}

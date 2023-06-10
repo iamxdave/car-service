@@ -4,6 +4,6 @@ namespace Services.Orders
 {
     public interface IOrderService
     {
-        public IQueryable<Order> GetOrders();
+        public IQueryable<Order> GetUserOrders(Guid idUser);
     }
 }
