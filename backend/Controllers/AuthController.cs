@@ -29,7 +29,7 @@ namespace backend.Controllers
                 });
             }
 
-            var customer = new User
+            var user = new User
             {
                 Name = body.Name,
                 Surname = body.Surname,
@@ -37,11 +37,11 @@ namespace backend.Controllers
                 Password = BCrypt.Net.BCrypt.HashPassword(body.Password)
             };
 
-            await _service.CreateAsync(customer);
+            await _service.CreateAsync(user);
 
             await _service.SaveChangesAsync();
             
-            return Created("success", customer);
+            return Created("success", user);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto body) 
@@ -85,7 +85,7 @@ namespace backend.Controllers
                 
                 Guid userId = Guid.Parse(token.Issuer);
 
-                var user = await _service.GetById(userId);
+                var user = await _service.GetByIdAsync(userId);
 
                 return Ok(user);
             } catch (Exception _)

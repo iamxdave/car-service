@@ -1,6 +1,9 @@
 export default interface Car {
-    model: string;
-    registrationNumber?: string;
-    cost?: number;
-    warranty?: number;
-  }
+  idCar?: string;
+  idWorkshop: number;
+  brand: string;
+  model: string;
+  registrationNumber?: string;
+  cost?: number;
+  description?: string;
+};

@@ -1,64 +1,33 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { UserContext, UserContextType } from "../../App";
-import axios, { AxiosError, AxiosResponse, AxiosResponseHeaders } from "axios";
-import { urlLogin, urlUser } from "../../endpoints";
-import { Input, Ripple, initTE } from "tw-elements";
-import logo from "../../assets/logo.png";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { urlLogin } from "../../endpoints";
+import User from "../../types/User";
 
-initTE({ Input, Ripple });
-
-interface Credit {
-  email: string;
-  password: string;
-  remember: boolean;
-}
-
-export default function LogIn() {
-  const [formData, setFormData] = useState<Credit>({
+const LogIn = () => {
+  const [formData, setFormData] = useState<User>({
+    idPerson: "",
+    name: "",
+    surname: "",
     email: "",
     password: "",
     remember: false,
   });
-  const { user, updateUser } = useContext(UserContext) as UserContextType;
-  const rememberCheckboxRef = useRef<HTMLInputElement>(null);
+  const { user, order, updateUser, updateOrder } = useContext(UserContext) as UserContextType;
   const [validation, setValidation] = useState("");
   const navigate = useNavigate();
-
-
-  useEffect(() => {
-    axios.defaults.withCredentials = true;
-
-    axios
-      .get(urlUser)
-      .then((response: AxiosResponse) => {
-        if (response.status === 200) {
-          const user = response.data;
-          updateUser(user);
-          navigate('/');
-        }
-      })
-      .catch((reason: AxiosError) => {
-        return;
-      });
-  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const credit: Credit = {
-      email: formData.email,
-      password: formData.password,
-      remember: formData.remember,
-    };
-
     await axios
-      .post(urlLogin, credit)
+      .post(urlLogin, formData)
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
-          updateUser(credit);
-          navigate('/');
+          updateUser(formData);
+          updateOrder({ ...order!, idUser: formData!.idPerson })
+          navigate("/");
         }
       })
       .catch((reason: AxiosError) => {
@@ -72,25 +41,32 @@ export default function LogIn() {
   return (
     <section className="h-screen flex flex-col md:flex-row">
       <div
-        className="h-screen w-screen md:w-2/3 flex items-center justify-center"
+        className="h-screen w-screen md:w-2/3 bg-neutral-900 flex items-center justify-center"
         style={{
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1602481222849-c8f6bb1f0f38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          // height: "100vh",
+          // background: "linear-gradient(90deg,#e52e71,#ff8a00)",
+          // content: "",
+          // left: "30%",
+          // top: "20%",
+          // width: "450px",
+          // height: "450px",
+          // background: "#17141d",
+          // borderRadius: "62% 47% 82% 35% / 45% 45% 80% 66%",
+          // willChange: "border-radius, transform, opacity",
+          // animation: "sliderShape 5s linear infinite",
+          // display: "block",
+          // zIndex: "-1",
+          // webkitAnimation: "sliderShape 5s linear infinite"
+          // backgroundImage:
+          //   "url(https://images.unsplash.com/photo-1602481222849-c8f6bb1f0f38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)",
+          // backgroundRepeat: "no-repeat",
+          // backgroundSize: "cover",
+          // backgroundPosition: "center",
         }}
       >
-        <div className="mb-12 md:mb-0 relative inset-0">
-          <img
-            src={logo}
-            className="w-auto h-1/4 max-w-[200px] md:max-w-xs"
-            alt="Logo"
-          />
-        </div>
       </div>
-      <div className="md:w-1/3">
-        <div className="max-w-lg h-full px-8 py-24">
+      <div className="md:w-1/2 lg:w-1/3 flex justify-center align-middle">
+        <div className="flex-grow max-w-xl h-full px-16 md:px-8 py-24">
           <div className="flex h-full items-center justify-center">
             <div className="w-full">
               <div className="text-2xl text-center mb-6">Log In</div>
@@ -105,12 +81,12 @@ export default function LogIn() {
                   <input
                     type="email"
                     id="email"
-                    value={formData.email}
+                    value={formData!.email}
                     className="bg-neutral-50 border-2 border-neutral-500 text-neutral-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 k:placeholder-neutral-400"
                     placeholder="name_surname@email.com"
                     onChange={(e) =>
                       setFormData((prev) => ({
-                        ...prev,
+                        ...prev!,
                         email: e.target.value,
                       }))
                     }
@@ -127,11 +103,11 @@ export default function LogIn() {
                   <input
                     type="password"
                     id="password"
-                    value={formData.password}
+                    value={formData!.password}
                     className="bg-neutral-50 border-2 border-neutral-500 text-neutral-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 k:placeholder-neutral-400"
                     onChange={(e) =>
                       setFormData((prev) => ({
-                        ...prev,
+                        ...prev!,
                         password: e.target.value,
                       }))
                     }
@@ -157,7 +133,7 @@ export default function LogIn() {
                   </div>
 
                   <Link
-                    to="/singup"
+                    to="/signup"
                     className="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
                   >
                     Sign up
@@ -179,4 +155,6 @@ export default function LogIn() {
       </div>
     </section>
   );
-}
+};
+
+export default LogIn;

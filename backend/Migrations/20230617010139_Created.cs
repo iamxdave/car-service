@@ -50,7 +50,6 @@ namespace backend.Migrations
                     IdPerson = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Surname = table.Column<string>(type: "text", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Discriminator = table.Column<string>(type: "text", nullable: false),
                     BookedDates = table.Column<List<DateTime>>(type: "timestamp without time zone[]", nullable: true),
                     IdWorkshop = table.Column<int>(type: "integer", nullable: true),
@@ -74,10 +73,12 @@ namespace backend.Migrations
                 {
                     IdCar = table.Column<Guid>(type: "uuid", nullable: false),
                     IdWorkshop = table.Column<int>(type: "integer", nullable: false),
+                    Brand = table.Column<string>(type: "text", nullable: false),
                     Model = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "text", nullable: false),
                     UserIdPerson = table.Column<Guid>(type: "uuid", nullable: true),
                     Cost = table.Column<int>(type: "integer", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     Warranty = table.Column<int>(type: "integer", nullable: true),
                     RegistrationNumber = table.Column<string>(type: "text", nullable: true),
                     IdUser = table.Column<Guid>(type: "uuid", nullable: true)
@@ -118,9 +119,10 @@ namespace backend.Migrations
                     Status = table.Column<int>(type: "integer", nullable: false),
                     Discriminator = table.Column<string>(type: "text", nullable: false),
                     UserIdPerson = table.Column<Guid>(type: "uuid", nullable: true),
-                    TotalPartCost = table.Column<int>(type: "integer", nullable: true),
-                    ManufacturerWarranty = table.Column<int>(type: "integer", nullable: true),
-                    Price = table.Column<decimal>(type: "numeric", nullable: true)
+                    TotalPartCost = table.Column<decimal>(type: "numeric", nullable: true),
+                    SaleCost = table.Column<int>(type: "integer", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric", nullable: true),
+                    Warranty = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -156,8 +158,7 @@ namespace backend.Migrations
                 {
                     IdRepairPart = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Quality = table.Column<int>(type: "integer", nullable: false),
-                    Cost = table.Column<int>(type: "integer", nullable: false),
+                    Cost = table.Column<decimal>(type: "numeric", nullable: false),
                     IdRepair = table.Column<Guid>(type: "uuid", nullable: false),
                     IdPart = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -207,23 +208,31 @@ namespace backend.Migrations
 
             migrationBuilder.InsertData(
                 table: "Cars",
-                columns: new[] { "IdCar", "Cost", "Discriminator", "IdWorkshop", "Model", "UserIdPerson", "Warranty" },
+                columns: new[] { "IdCar", "Brand", "Cost", "Description", "Discriminator", "IdWorkshop", "Model", "UserIdPerson", "Warranty" },
                 values: new object[,]
                 {
-                    { new Guid("46864815-9044-4d68-a804-22d3f5723b6a"), 20000, "CarToBuy", 3, "Civic", null, 2 },
-                    { new Guid("50d82207-0e80-4519-8062-9e50074b60ea"), 50000, "CarToBuy", 1, "Astra", null, 3 },
-                    { new Guid("6bf62f70-3763-4008-bc42-f0befea85450"), 30000, "CarToBuy", 3, "Fiesta", null, 5 },
-                    { new Guid("c08a51ba-d473-4041-9a04-b325a872226c"), 40000, "CarToBuy", 2, "Golf", null, 4 }
+                    { new Guid("0a93fc24-22d7-409c-828c-313ee036f58d"), "Audi", 75000, "The Audi Horizon is an elegant sedan with modern technological solutions. Its refined interior and exceptional acoustics ensure a comfortable journey on any route.", "CarToBuy", 2, "Horizon", null, 5 },
+                    { new Guid("3234ec57-a066-4eaa-a855-68367d770107"), "Porsche", 250000, "The Porsche 911 is an iconic sports car that combines timeless design with exceptional performance. Its precise handling, powerful engine, and luxurious interior make it a dream car for enthusiasts.", "CarToBuy", 3, "911", null, 5 },
+                    { new Guid("341adbcc-f730-44c3-bfa8-db4ef79c7b88"), "Toyota", 25000, "The Toyota Venture is a compact crossover that excels in urban conditions. Equipped with advanced safety systems and an economical engine, it is an ideal companion for daily commuting.", "CarToBuy", 3, "Venture", null, 5 },
+                    { new Guid("35e50fdf-5695-429b-b772-f28ea6265f3d"), "Opel", 50000, "The Opel Astra is a compact car known for its elegant style and high-quality craftsmanship. It offers advanced technologies, a comfortable interior, and a great driving experience on longer journeys.", "CarToBuy", 1, "Astra", null, 5 },
+                    { new Guid("39f1a638-e31e-4aee-b16c-099d7afd79a6"), "Volkswagen", 40000, "The Volkswagen Golf is an iconic compact car known for its solid construction, precise handling, and high-quality materials. It offers a versatile package and a wide range of features.", "CarToBuy", 2, "Golf", null, 5 },
+                    { new Guid("4b94905e-0181-401c-8e14-c1ce19c34247"), "Ford", 30000, "The Ford Fiesta is a popular compact car known for its affordability and energetic performance. It offers a comfortable ride and is an excellent choice for city driving.", "CarToBuy", 1, "Fiesta", null, 5 },
+                    { new Guid("9ede1d1e-7d83-4eef-89bf-9a8995609a26"), "Ferrari", 350000, "The Ferrari 488 GTB is a legendary Italian supercar that represents the pinnacle of automotive engineering. With its breathtaking speed, aerodynamic design, and luxurious features, it is a symbol of automotive excellence.", "CarToBuy", 3, "488 GTB", null, 5 },
+                    { new Guid("c76c8fbb-c1d3-4af4-a609-4b1f2302ef42"), "Honda", 20000, "The Honda Civic is a reliable and fuel-efficient compact car. It combines a stylish design, spacious interior, and advanced features, making it a versatile option for various needs.", "CarToBuy", 1, "Civic", null, 5 },
+                    { new Guid("dca0b583-8a40-4693-a3df-cb7da2c1ff50"), "Lamborghini", 300000, "The Lamborghini Huracan is a high-performance supercar that embodies speed, luxury, and style. With its powerful engine and eye-catching design, it delivers an exhilarating driving experience.", "CarToBuy", 3, "Huracan", null, 5 },
+                    { new Guid("e4df4b32-31bc-42cb-8cb5-d5bd8e261ca8"), "Mercedes", 90000, "The Mercedes Aventura is a luxurious SUV that combines elegance and comfort with impressive all-wheel drive capabilities. Its spacious interior and advanced safety systems make every journey a true pleasure.", "CarToBuy", 2, "Aventura", null, 5 },
+                    { new Guid("e7f2bea5-a943-4234-aa6d-06cf7fa48f40"), "BMW", 55000, "The BMW Swiftsport is a sporty car with refined style and a powerful engine. It offers dynamic driving and unmatched excitement behind the wheel, satisfying the needs of sports car enthusiasts.", "CarToBuy", 2, "Swiftsport", null, 5 },
+                    { new Guid("fa756a6f-7547-4050-bc0d-61b1606c1889"), "Tesla", 70000, "The Tesla Elektra is a luxury electric car with a futuristic design. It boasts an impressive range and advanced autonomous features, making it a perfect choice for tech enthusiasts.", "CarToBuy", 2, "Elektra", null, 5 }
                 });
 
             migrationBuilder.InsertData(
                 table: "People",
-                columns: new[] { "IdPerson", "BirthDate", "BookedDates", "Discriminator", "IdWorkshop", "Name", "Surname" },
+                columns: new[] { "IdPerson", "BookedDates", "Discriminator", "IdWorkshop", "Name", "Surname" },
                 values: new object[,]
                 {
-                    { new Guid("727f407e-e64e-4287-b5c5-16f7b837a4ab"), new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new List<DateTime>(), "Mechanic", 1, "Adam", "Nowak" },
-                    { new Guid("8973b72d-2375-4d4a-a0eb-883324b97686"), new DateTime(1992, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new List<DateTime>(), "Mechanic", 1, "Ewa", "Kowalska" },
-                    { new Guid("a25bed7f-59d5-44e5-bb24-e6ea30cdaf8c"), new DateTime(1988, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new List<DateTime>(), "Mechanic", 2, "Tomasz", "Lis" }
+                    { new Guid("1c8dbd81-0b99-4cca-8430-3cb65d6560b0"), new List<DateTime> { new DateTime(2023, 6, 25, 0, 0, 0, 0, DateTimeKind.Local) }, "Mechanic", 1, "Ewa", "Kowalska" },
+                    { new Guid("bd8553c1-81b9-4a6e-9302-97fd11b8d6c6"), new List<DateTime> { new DateTime(2023, 6, 18, 0, 0, 0, 0, DateTimeKind.Local) }, "Mechanic", 1, "Adam", "Nowak" },
+                    { new Guid("d7a8be52-893b-42e0-aefb-0e8d251ee7de"), new List<DateTime>(), "Mechanic", 2, "Tomasz", "Lis" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -8,7 +8,9 @@ using backend.Helpers.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using backend.Services.Workshops;
+using backend.Services.Parts;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +24,17 @@ builder.Services.AddDbContext<CarServiceContext>(options =>
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IPartService, PartService>();
+builder.Services.AddScoped<IWorkshopService, WorkshopService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMechanicService, MechanicService>();
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

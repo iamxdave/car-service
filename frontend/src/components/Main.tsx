@@ -5,6 +5,7 @@ import LogIn from "./Account/LogIn";
 import { useContext } from "react";
 import Unauthorized from "./Errors/Unauthorized";
 import NotFound from "./Errors/NotFound";
+import SignUp from "./Account/SingUp";
 
 const Main = () => {
   const { user, updateUser } = useContext(UserContext) as UserContextType;
@@ -15,14 +16,8 @@ const Main = () => {
     <>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route
-          path="/main"
-          element={
-            // user? <MainPage/> : <Unauthorized page={path}/>
-            <MainPage />
-          }
-        />
         <Route path="/login" element={<LogIn />}></Route>
+        <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>

@@ -78,3 +78,4 @@ C:\Users\Dawid\Desktop\car-service\backend\obj\Debug\net7.0\ref\backend.dll
 C:\Users\Dawid\Desktop\car-service\backend\bin\Debug\net7.0\DevOne.Security.Cryptography.BCrypt.dll
 C:\Users\Dawid\Desktop\car-service\backend\bin\Debug\net7.0\BCrypt.Net-Next.dll
 C:\Users\Dawid\Desktop\car-service\backend\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Dawid\Desktop\car-service\backend\bin\Debug\net7.0\Newtonsoft.Json.dll

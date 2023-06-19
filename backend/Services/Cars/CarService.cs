@@ -20,5 +20,13 @@ namespace backend.Services.Cars
         {
             return _context.CarToBuys;
         }
+        public async Task<CarToRepair?> GetUserCarByIdAsync(Guid idCar)
+        {
+            return await _context.CarToRepairs.FirstOrDefaultAsync(e => e.IdCar == idCar);
+        }
+        public async Task<CarToBuy?> GetServiceCarByIdAsync(Guid idCar)
+        {
+            return await _context.CarToBuys.FirstOrDefaultAsync(e => e.IdCar == idCar);
+        }
     }
 }

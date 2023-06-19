@@ -22,7 +22,7 @@ namespace backend.Services.Users
             return await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
         }
 
-        public async Task<User?> GetById(Guid id) 
+        public async Task<User?> GetByIdAsync(Guid id) 
         {
             return await _context.Users.FirstOrDefaultAsync(e => e.IdPerson == id);
         }

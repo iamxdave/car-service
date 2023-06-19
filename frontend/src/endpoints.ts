@@ -1,6 +1,10 @@
 const baseURL = process.env.REACT_APP_API_URL;
 export const urlMechanics = `${baseURL}/mechanics`
 export const urlCars = `${baseURL}/cars`
+export const urlOrders = `${baseURL}/orders`
+export const urlWorkshops = `${baseURL}/workshops`
+export const urlParts = `${baseURL}/parts`
 export const urlLogin = `${baseURL}/Auth/login`
 export const urlLogout = `${baseURL}/Auth/logout`
+export const urlRegister = `${baseURL}/Auth/register`
 export const urlUser = `${baseURL}/Auth/user`

@@ -1,5 +1,5 @@
-import { Fragment, useState, useEffect, useContext } from "react";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
+import { useState, useEffect, useContext } from "react";
+import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -38,6 +38,13 @@ const Header = () => {
           navigate("/unauthorized");
         }
       });
+  };
+
+  const navbarHandle = (id: string) => {
+    const section = document.getElementById(id);
+    window.scrollTo({
+      top: section?.getBoundingClientRect().top! + window.scrollY - 72,
+    });
   };
 
   useEffect(() => {
@@ -82,9 +89,9 @@ const Header = () => {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          {/* <a href="#" className="-m-1.5 p-1.5">
             <img className="h-8 w-auto" src={logo} alt="" />
-          </a>
+          </a> */}
         </div>
         <div className="flex lg:hidden">
           <button
@@ -101,10 +108,7 @@ const Header = () => {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           <a
-            onClick={() => {
-              const section = document.getElementById("second");
-              window.scrollTo({ top: section?.getBoundingClientRect().top! + window.scrollY - 80});
-            }}
+            onClick={() => navbarHandle("second")}
             className={`cursor-pointer text-sm font-semibold leading-6 ${
               navbarTheme === Theme.Light
                 ? "text-neutral-700"
@@ -113,61 +117,90 @@ const Header = () => {
           >
             Cars
           </a>
-          <a
-            href="#"
-            className={`text-sm font-semibold leading-6 ${
-              navbarTheme === Theme.Light
-                ? "text-neutral-700"
-                : "text-neutral-300"
-            }`}
-          >
-            Features
-          </a>
-          <a
-            href="#"
-            className={`text-sm font-semibold leading-6 ${
-              navbarTheme === Theme.Light
-                ? "text-neutral-700"
-                : "text-neutral-300"
-            }`}
-          >
-            Marketplace
-          </a>
-          <a
-            href="#"
-            className={`text-sm font-semibold leading-6 ${
-              navbarTheme === Theme.Light
-                ? "text-neutral-700"
-                : "text-neutral-300"
-            }`}
-          >
-            Company
-          </a>
+          {user && user !== undefined && (
+            <>
+              <a
+                href="#"
+                className={`text-sm font-semibold leading-6 ${
+                  navbarTheme === Theme.Light
+                    ? "text-neutral-700"
+                    : "text-neutral-300"
+                }`}
+              >
+                Features
+              </a>
+              <a
+                href="#"
+                className={`text-sm font-semibold leading-6 ${
+                  navbarTheme === Theme.Light
+                    ? "text-neutral-700"
+                    : "text-neutral-300"
+                }`}
+              >
+                Marketplace
+              </a>
+              <a
+                href="#"
+                className={`text-sm font-semibold leading-6 ${
+                  navbarTheme === Theme.Light
+                    ? "text-neutral-700"
+                    : "text-neutral-300"
+                }`}
+              >
+                Company
+              </a>
+            </>
+          )}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className={`text-sm font-semibold leading-6 ${
-                navbarTheme === Theme.Light
-                  ? "text-neutral-700"
-                  : "text-neutral-300"
-              }`}
-            >
-              Log out
-            </button>
-          ) : (
-            <Link
-              to={"/login"}
-              className={`text-sm font-semibold leading-6 ${
-                navbarTheme === Theme.Light
-                  ? "text-neutral-700"
-                  : "text-neutral-300"
-              }`}
-            >
-              Log in <span aria-hidden="true">&rarr;</span>
-            </Link>
-          )}
+          <div className="flex gap-5">
+            {user && user !== undefined ? (
+              <>
+                <p
+                  className={`text-sm font-semibold leading-6 ${
+                    navbarTheme === Theme.Light
+                      ? "text-neutral-700"
+                      : "text-neutral-300"
+                  }`}
+                >
+                  Hello, {user.name} {user.surname}
+                </p>
+                <button
+                  onClick={handleLogout}
+                  className={`text-sm font-semibold leading-6 ${
+                    navbarTheme === Theme.Light
+                      ? "text-neutral-700"
+                      : "text-neutral-300"
+                  }`}
+                >
+                  Log out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={"/signup"}
+                  className={`text-sm font-semibold leading-6 ${
+                    navbarTheme === Theme.Light
+                      ? "text-neutral-700"
+                      : "text-neutral-300"
+                  }`}
+                >
+                  Sign up
+                </Link>
+                <Link
+                  to={"/login"}
+                  className={`text-sm font-semibold leading-6 ${
+                    navbarTheme === Theme.Light
+                      ? "text-neutral-700"
+                      : "text-neutral-300"
+                  }`}
+                >
+                  Log in
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </nav>
       <Dialog
@@ -204,7 +237,7 @@ const Header = () => {
                 >
                   Cars
                 </a>
-                {user && (
+                {user && user !== undefined && (
                   <>
                     <a
                       href="#"
@@ -240,28 +273,51 @@ const Header = () => {
                 )}
               </div>
               <div className="py-6">
-                {user ? (
-                  <button
-                    onClick={handleLogout}
-                    className={`-mx-3 text-left w-[calc(100%+1.5rem)] block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                      navbarTheme === Theme.Light
-                        ? "text-black hover:text-white hover:hover:bg-black"
-                        : "text-white hover:text-neutral-900 hover:hover:bg-white"
-                    }`}
-                  >
-                    Log out
-                  </button>
+                {user && user !== undefined ? (
+                  <>
+                    <p
+                      className={`-mx-3 text-left w-[calc(100%+1.5rem)] block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                        navbarTheme === Theme.Light
+                          ? "text-black hover:text-white hover:hover:bg-black"
+                          : "text-white hover:text-neutral-900 hover:hover:bg-white"
+                      }`}
+                    >
+                      Hello, {user.name} {user.surname}
+                    </p>
+                    <button
+                      onClick={handleLogout}
+                      className={`-mx-3 text-left w-[calc(100%+1.5rem)] block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                        navbarTheme === Theme.Light
+                          ? "text-black hover:text-white hover:hover:bg-black"
+                          : "text-white hover:text-neutral-900 hover:hover:bg-white"
+                      }`}
+                    >
+                      Log out
+                    </button>
+                  </>
                 ) : (
-                  <Link
-                    to={"/login"}
-                    className={`-mx-3 text-left w-[calc(100%+1.5rem)] block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                      navbarTheme === Theme.Light
-                        ? "text-black hover:text-white hover:hover:bg-black"
-                        : "text-white hover:text-neutral-900 hover:hover:bg-white"
-                    }`}
-                  >
-                    Log in <span aria-hidden="true">&rarr;</span>
-                  </Link>
+                  <>
+                    <Link
+                      to={"/signup"}
+                      className={`-mx-3 text-left w-[calc(100%+1.5rem)] block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                        navbarTheme === Theme.Light
+                          ? "text-black hover:text-white hover:hover:bg-black"
+                          : "text-white hover:text-neutral-900 hover:hover:bg-white"
+                      }`}
+                    >
+                      Sign up
+                    </Link>
+                    <Link
+                      to={"/login"}
+                      className={`-mx-3 text-left w-[calc(100%+1.5rem)] block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                        navbarTheme === Theme.Light
+                          ? "text-black hover:text-white hover:hover:bg-black"
+                          : "text-white hover:text-neutral-900 hover:hover:bg-white"
+                      }`}
+                    >
+                      Log in
+                    </Link>
+                  </>
                 )}
               </div>
             </div>

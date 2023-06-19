@@ -13,10 +13,6 @@ namespace Entities.Models
         public string Address { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        [Required]
-        public DateTime OpeningTime { get; } = new DateTime(1, 1, 1, 9, 0, 0).ToUniversalTime();
-        [Required]
-        public DateTime ClosingTime { get; } = new DateTime(1, 1, 1, 22, 0, 0).ToUniversalTime();
         public virtual ICollection<Mechanic> Mechanics { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
     }

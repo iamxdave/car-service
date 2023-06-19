@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import CarCarousel from "../Cars/CarCarousel";
+import OrderType from "../../types/OrderType";
+import CarForm from "../Cars/CarForm";
+import Buyout from "./Order/Buyout";
+import Repair from "./Order/Repair";
+import MechanicForm from "../Mechanics/MechanicForm";
+import Title from "./Title";
+import Prelude from "../Cars/Prelude";
+import Conclusion from "./Conclusion";
+import { UserContext, UserContextType } from "../../App";
+import WarrantyForm from "../Warranty/WarrantyForm";
+import PartsForm from "../Parts/PartsForm";
 
 const OrderSelection = () => {
-  const [openTab, setOpenTab] = React.useState(1);
+  const [openTab, setOpenTab] = useState(OrderType.Buyout);
+  const { order, updateOrder } = useContext(UserContext) as UserContextType;
+
+  const handleOpenTabClick = (
+    type: OrderType,
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setOpenTab(type);
+    updateOrder(undefined);
+  };
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -14,14 +37,11 @@ const OrderSelection = () => {
               <a
                 className={
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal transition-all duration-300 ease-in-out " +
-                  (openTab === 1
+                  (openTab === OrderType.Buyout
                     ? "text-white bg-neutral-900"
                     : "text-yellow-400 bg-white")
                 }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(1);
-                }}
+                onClick={(e) => handleOpenTabClick(OrderType.Buyout, e)}
                 data-toggle="tab"
                 href="#link1"
                 role="tablist"
@@ -33,47 +53,41 @@ const OrderSelection = () => {
               <a
                 className={
                   "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal transition-all duration-300 ease-in-out " +
-                  (openTab === 2
-                    ? "text-white bg-yellow-400"
+                  (openTab === OrderType.Repair
+                    ? "text-black bg-yellow-400"
                     : "text-yellow-400 bg-white")
                 }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(2);
-                }}
+                onClick={(e) => handleOpenTabClick(OrderType.Repair, e)}
                 data-toggle="tab"
                 href="#link2"
                 role="tablist"
               >
-                 Reppair
+                Reppair
               </a>
             </li>
           </ul>
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-            <div className="px-4 py-5 flex-auto">
+            <div className="px-4 py-5 my-12 flex-auto">
               <div className="tab-content tab-space">
-                <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                  <p>
-                    Collaboratively administrate empowered markets via
-                    plug-and-play networks. Dynamically procrastinate B2C users
-                    after installed base benefits.
-                    <br />
-                    <br /> Dramatically visualize customer directed convergence
-                    without revolutionary ROI.
-                  </p>
+                <div
+                  className={openTab === OrderType.Buyout ? "block" : "hidden"}
+                  id="link1"
+                >
+                  <CarCarousel type={OrderType.Buyout} />
+                  <WarrantyForm />
                 </div>
-                <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                  <p>
-                    Completely synergize resource taxing relationships via
-                    premier niche markets. Professionally cultivate one-to-one
-                    customer service with robust ideas.
-                    <br />
-                    <br />
-                    Dynamically innovate resource-leveling customer service for
-                    state of the art customer service.
-                  </p>
+                <div
+                  className={openTab === OrderType.Repair ? "block" : "hidden"}
+                  id="link2"
+                >
+                  <Prelude />
+                  <CarForm />
+                  <CarCarousel type={OrderType.Repair} />
+                  <PartsForm />
                 </div>
               </div>
+              <MechanicForm />
+              <Conclusion type={openTab} />
             </div>
           </div>
         </div>

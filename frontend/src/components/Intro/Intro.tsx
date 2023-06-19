@@ -9,11 +9,11 @@ const Intro = () => {
           <div className="mx-auto">
             <div className="grid items-center lg:gap-12 lg:grid-cols-2">
               <div className="mt-12 lg:mt-0">
-                <h1 className="mb-12 text-5xl font-bold tracking-tight text-[hsl(218,81%,95%)] md:text-6xl xl:text-7xl">
+                <h1 className="mb-12 text-6xl font-bold tracking-tight text-[hsl(218,81%,95%)] md:text-6xl xl:text-7xl">
                   Driven by <br />
                   <TextAnimation text="EXCELLENCE" />
                 </h1>
-                <p className="text-lg text-[hsl(218,81%,95%)]">
+                <p className="text-lg md:text-xl xl:text-2xl text-[hsl(218,81%,95%)]">
                   Experience the epitome of automotive excellence with our
                   unparalleled car service, where your satisfaction is our driving force.
                 </p>

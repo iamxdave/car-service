@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(CarServiceContext))]
-    [Migration("20230610134839_Updated")]
+    [Migration("20230617163439_Updated")]
     partial class Updated
     {
         /// <inheritdoc />
@@ -31,6 +31,10 @@ namespace backend.Migrations
                     b.Property<Guid>("IdCar")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -186,9 +190,6 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("text");
@@ -218,17 +219,14 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdRepairPart"));
 
-                    b.Property<int>("Cost")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("IdPart")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("IdRepair")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Quality")
-                        .HasColumnType("integer");
 
                     b.HasKey("IdRepairPart");
 
@@ -294,6 +292,10 @@ namespace backend.Migrations
                     b.Property<int>("Cost")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Warranty")
                         .HasColumnType("integer");
 
@@ -302,34 +304,122 @@ namespace backend.Migrations
                     b.HasData(
                         new
                         {
-                            IdCar = new Guid("3c454538-b2b0-4f00-9086-3b3d0b26830a"),
+                            IdCar = new Guid("4fbc4616-35aa-4de8-829d-405ba2ce6e44"),
+                            Brand = "Ford",
+                            IdWorkshop = 1,
+                            Model = "Fiesta",
+                            Cost = 30000,
+                            Description = "The Ford Fiesta is a popular compact car known for its affordability and energetic performance. It offers a comfortable ride and is an excellent choice for city driving.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("3ddddc92-c323-413e-9732-c0c7e31d1ce3"),
+                            Brand = "Honda",
+                            IdWorkshop = 1,
+                            Model = "Civic",
+                            Cost = 20000,
+                            Description = "The Honda Civic is a reliable and fuel-efficient compact car. It combines a stylish design, spacious interior, and advanced features, making it a versatile option for various needs.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("417048fb-3337-40bb-a81c-551940a351b9"),
+                            Brand = "Opel",
                             IdWorkshop = 1,
                             Model = "Astra",
                             Cost = 50000,
-                            Warranty = 3
+                            Description = "The Opel Astra is a compact car known for its elegant style and high-quality craftsmanship. It offers advanced technologies, a comfortable interior, and a great driving experience on longer journeys.",
+                            Warranty = 5
                         },
                         new
                         {
-                            IdCar = new Guid("42a52d8f-42e4-43a3-ba48-79f89226b2b3"),
+                            IdCar = new Guid("9d405965-6c64-4c4b-ac9e-ca668bc3c7bf"),
+                            Brand = "Volkswagen",
                             IdWorkshop = 2,
                             Model = "Golf",
                             Cost = 40000,
-                            Warranty = 4
+                            Description = "The Volkswagen Golf is an iconic compact car known for its solid construction, precise handling, and high-quality materials. It offers a versatile package and a wide range of features.",
+                            Warranty = 5
                         },
                         new
                         {
-                            IdCar = new Guid("636f9723-8eeb-4c07-a039-31056ace4132"),
-                            IdWorkshop = 3,
-                            Model = "Civic",
-                            Cost = 20000,
-                            Warranty = 2
+                            IdCar = new Guid("6fb0ee70-9487-4705-836a-03c884bbd5e6"),
+                            Brand = "Tesla",
+                            IdWorkshop = 2,
+                            Model = "Elektra",
+                            Cost = 70000,
+                            Description = "The Tesla Elektra is a luxury electric car with a futuristic design. It boasts an impressive range and advanced autonomous features, making it a perfect choice for tech enthusiasts.",
+                            Warranty = 5
                         },
                         new
                         {
-                            IdCar = new Guid("08a1f32f-f738-43fb-a34b-f99f0d8b0842"),
+                            IdCar = new Guid("1d63d892-1867-4ba8-98a4-252e723615cd"),
+                            Brand = "BMW",
+                            IdWorkshop = 2,
+                            Model = "Swiftsport",
+                            Cost = 55000,
+                            Description = "The BMW Swiftsport is a sporty car with refined style and a powerful engine. It offers dynamic driving and unmatched excitement behind the wheel, satisfying the needs of sports car enthusiasts.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("f815ae48-cf08-44f0-b1bd-35f61f1a3c6e"),
+                            Brand = "Mercedes",
+                            IdWorkshop = 2,
+                            Model = "Aventura",
+                            Cost = 90000,
+                            Description = "The Mercedes Aventura is a luxurious SUV that combines elegance and comfort with impressive all-wheel drive capabilities. Its spacious interior and advanced safety systems make every journey a true pleasure.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("2abacb67-c94b-433f-9a82-0dc071d5023e"),
+                            Brand = "Audi",
+                            IdWorkshop = 2,
+                            Model = "Horizon",
+                            Cost = 75000,
+                            Description = "The Audi Horizon is an elegant sedan with modern technological solutions. Its refined interior and exceptional acoustics ensure a comfortable journey on any route.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("d18e37de-1452-408c-abb6-75695f3019cc"),
+                            Brand = "Toyota",
                             IdWorkshop = 3,
-                            Model = "Fiesta",
-                            Cost = 30000,
+                            Model = "Venture",
+                            Cost = 25000,
+                            Description = "The Toyota Venture is a compact crossover that excels in urban conditions. Equipped with advanced safety systems and an economical engine, it is an ideal companion for daily commuting.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("e90e1701-6e1a-4360-8dbf-3890b2f674a8"),
+                            Brand = "Lamborghini",
+                            IdWorkshop = 3,
+                            Model = "Huracan",
+                            Cost = 300000,
+                            Description = "The Lamborghini Huracan is a high-performance supercar that embodies speed, luxury, and style. With its powerful engine and eye-catching design, it delivers an exhilarating driving experience.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("0580f1c6-0e68-4ecd-a5bd-7c5a96748725"),
+                            Brand = "Porsche",
+                            IdWorkshop = 3,
+                            Model = "911",
+                            Cost = 250000,
+                            Description = "The Porsche 911 is an iconic sports car that combines timeless design with exceptional performance. Its precise handling, powerful engine, and luxurious interior make it a dream car for enthusiasts.",
+                            Warranty = 5
+                        },
+                        new
+                        {
+                            IdCar = new Guid("6aca1fa5-d30c-4e61-9f4d-070d74ece0b3"),
+                            Brand = "Ferrari",
+                            IdWorkshop = 3,
+                            Model = "488 GTB",
+                            Cost = 350000,
+                            Description = "The Ferrari 488 GTB is a legendary Italian supercar that represents the pinnacle of automotive engineering. With its breathtaking speed, aerodynamic design, and luxurious features, it is a symbol of automotive excellence.",
                             Warranty = 5
                         });
                 });
@@ -350,17 +440,7 @@ namespace backend.Migrations
                     b.HasDiscriminator().HasValue("CarToRepair");
                 });
 
-            modelBuilder.Entity("Entities.Models.Repair", b =>
-                {
-                    b.HasBaseType("Entities.Models.Order");
-
-                    b.Property<int>("TotalPartCost")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("Repair");
-                });
-
-            modelBuilder.Entity("Entities.Models.Sale", b =>
+            modelBuilder.Entity("Entities.Models.Buyout", b =>
                 {
                     b.HasBaseType("Entities.Models.Order");
 
@@ -370,7 +450,20 @@ namespace backend.Migrations
                     b.Property<int>("SaleCost")
                         .HasColumnType("integer");
 
-                    b.HasDiscriminator().HasValue("Sale");
+                    b.Property<int>("Warranty")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("Buyout");
+                });
+
+            modelBuilder.Entity("Entities.Models.Repair", b =>
+                {
+                    b.HasBaseType("Entities.Models.Order");
+
+                    b.Property<decimal>("TotalPartCost")
+                        .HasColumnType("numeric");
+
+                    b.HasDiscriminator().HasValue("Repair");
                 });
 
             modelBuilder.Entity("Entities.Models.Mechanic", b =>
@@ -391,26 +484,23 @@ namespace backend.Migrations
                     b.HasData(
                         new
                         {
-                            IdPerson = new Guid("62988d48-7f31-4edb-a188-95dff0a2c4b5"),
-                            BirthDate = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdPerson = new Guid("ed328242-5a1d-49bb-b552-d6e999af2fb3"),
                             Name = "Adam",
                             Surname = "Nowak",
-                            BookedDates = new List<DateTime>(),
+                            BookedDates = new List<DateTime> { new DateTime(2023, 6, 18, 0, 0, 0, 0, DateTimeKind.Local) },
                             IdWorkshop = 1
                         },
                         new
                         {
-                            IdPerson = new Guid("1d736f70-76e7-4dab-8815-34e1acd76837"),
-                            BirthDate = new DateTime(1992, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdPerson = new Guid("61dfba1f-46e9-4636-808e-8d594827a2af"),
                             Name = "Ewa",
                             Surname = "Kowalska",
-                            BookedDates = new List<DateTime>(),
+                            BookedDates = new List<DateTime> { new DateTime(2023, 6, 25, 0, 0, 0, 0, DateTimeKind.Local) },
                             IdWorkshop = 1
                         },
                         new
                         {
-                            IdPerson = new Guid("40b00aee-114a-4cc4-b257-317ddf222d41"),
-                            BirthDate = new DateTime(1988, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdPerson = new Guid("e302e450-f536-4d46-b6d8-c4230dc11615"),
                             Name = "Tomasz",
                             Surname = "Lis",
                             BookedDates = new List<DateTime>(),

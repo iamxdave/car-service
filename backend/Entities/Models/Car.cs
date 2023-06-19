@@ -10,6 +10,8 @@ namespace Entities.Models
         [Required]
         public int IdWorkshop { get; set; }
         [Required]
+        public string Brand { get; set; }
+        [Required]
         public string Model { get; set; }
         [ForeignKey(nameof(IdWorkshop))]
         public virtual Workshop Workshop { get; set; }

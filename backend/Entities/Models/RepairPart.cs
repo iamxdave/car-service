@@ -8,9 +8,7 @@ namespace Entities.Models
         [Key]
         public int IdRepairPart { get; set; }
         [Required]
-        public int Quality { get; set; }
-        [Required]
-        public int Cost { get; set; }
+        public decimal Cost { get; set; }
         [Required]
         public Guid IdRepair { get; set; }
         [Required]

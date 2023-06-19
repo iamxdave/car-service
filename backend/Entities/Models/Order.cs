@@ -15,7 +15,6 @@ namespace Entities.Models
         public Guid IdCar { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
-        [Required]
         public DateTime? DateCompleted { get; set; }
         [Required]
         public decimal Cost { get; set; }

@@ -12,6 +12,9 @@ namespace Entities.Models
         [Required]
         public int Cost { get; set; }
         [Required]
-        public int Warranty { get; set; }
+        public string Description { get; set; }
+        [Required]
+        public int Warranty { get; set; } = 5;
+
     }
 }

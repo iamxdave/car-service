@@ -22,7 +22,7 @@ namespace backend.Controllers
         }
 
         [HttpGet(Name = "GetAvailableMechanics")]
-        public async Task<IActionResult> GetAvailableMechanics(DateTime start, DateTime end)
+        public async Task<IActionResult> GetAvailableMechanics()
         {
 
             var mechanics = await _service.GetMechanics().ToListAsync();
@@ -32,36 +32,9 @@ namespace backend.Controllers
                 return NotFound("No mechanics in the database");
             }
 
-            if(start == default(DateTime) || end == default(DateTime)) {
-               var dtoMechanics = mechanics.Select(e => new MechanicDto
-                {
-                    Name = e.Name,
-                    Surname = e.Surname,
-                    BookedDates = e.BookedDates
-                });
-
-                return Ok(dtoMechanics);
-            }
-
-            if(start > end || start < DateTime.Now || end < DateTime.Now)
+            var dtoAvailableMechanics = mechanics.Select(e => new MechanicDto
             {
-                return Conflict("Date conflict");
-            }
-
-            var dateRange = Enumerable.Range(0, (end - start).Days + 1)
-                                        .Select(offset => start.AddDays(offset));
-
-            var availableMechanics = mechanics.Where(mechanic =>
-                !dateRange.Any(date => mechanic.BookedDates.Contains(date))
-            );
-
-            if (availableMechanics == null || !availableMechanics.Any())
-            {
-                return NotFound("No available mechanics in the database");
-            }
-
-            var dtoAvailableMechanics = availableMechanics.Select(e => new MechanicDto
-            {
+                IdPerson = e.IdPerson,
                 Name = e.Name,
                 Surname = e.Surname,
                 BookedDates = e.BookedDates
@@ -79,9 +52,9 @@ namespace backend.Controllers
             {
                 return NotFound();
             }
-            if(mechanic.BookedDates.Any(d => d.Day == date.Day))
+            if(mechanic.BookedDates.Any(d => d.Date == date.Date) || date < DateTime.Now)
             {
-                return Conflict();
+                return Conflict(new{date1 = mechanic.BookedDates.FirstOrDefault(), date2= date});
             }
 
             mechanic.BookedDates.Add(date);
