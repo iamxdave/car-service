@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    public class Car
+    public abstract class Car
     {
         [Key]
         public Guid IdCar { get; set; }

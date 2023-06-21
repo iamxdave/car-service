@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
@@ -15,5 +14,10 @@ namespace Entities.Models
         public string PhoneNumber { get; set; }
         public virtual ICollection<Mechanic> Mechanics { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
+
+        public void hireMechanic()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

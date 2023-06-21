@@ -25,7 +25,7 @@ namespace backend.Controllers
             if(await _service.GetByEmail(body.Email) != null)
             {
                 return Conflict(new{
-                    message = "email exists"
+                    message = "Account with that email already exists"
                 });
             }
 
@@ -54,9 +54,7 @@ namespace backend.Controllers
             if(!BCrypt.Net.BCrypt.Verify(body.Password, user.Password))
                 return Unauthorized(new {message = "Invalid credentials"});
             
-            //TODO
-            // if(body.IsRemebered)
-            // {
+
                 var jwt = _jwtService.Generate(user.IdPerson);
 
                 Response.Cookies.Append("jwt", jwt, new CookieOptions
@@ -68,8 +66,6 @@ namespace backend.Controllers
                     Domain = "localhost",
                     Expires = DateTime.UtcNow.AddDays(14)
                 });
-
-            // }
 
             return Ok(new {
                 message = "Success"

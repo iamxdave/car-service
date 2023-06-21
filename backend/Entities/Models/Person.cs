@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models
 {
-    public class Person
+    public abstract class Person
     {
         [Key]
         public Guid IdPerson { get; set; }

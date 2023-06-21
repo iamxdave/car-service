@@ -1,5 +1,3 @@
-
-
 namespace Services
 {
     public interface IDBService

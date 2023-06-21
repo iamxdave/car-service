@@ -1,3 +1,5 @@
+using Entities.Models;
+
 namespace backend.DTOs
 {
     public class MechanicDto
@@ -5,6 +7,6 @@ namespace backend.DTOs
         public Guid IdPerson { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public List<DateTime> BookedDates { get; set; }
+        public List<Reservation> BookedDates { get; set; }
     }
 }

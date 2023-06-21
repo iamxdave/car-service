@@ -6,7 +6,6 @@ namespace backend.Helpers.Jwt
 {
     public class JwtService : IJwtService
     {
-        //private readonly string secureKey;
         private readonly IConfiguration _configuration;
         private readonly string jwt_token;
         public JwtService(IConfiguration configuration)

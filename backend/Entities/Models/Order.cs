@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    public class Order
+    public abstract class Order
     {
         [Key]
         public Guid IdOrder { get; set; }
@@ -14,7 +14,7 @@ namespace Entities.Models
         [Required]
         public Guid IdCar { get; set; }
         [Required]
-        public DateTime DateCreated { get; set; }
+        public DateTime DateStarted { get; set; }
         public DateTime? DateCompleted { get; set; }
         [Required]
         public decimal Cost { get; set; }
@@ -26,6 +26,10 @@ namespace Entities.Models
         public virtual Mechanic Mechanic { get; set; }
         [ForeignKey(nameof(IdCar))]
         public virtual Car Car { get; set; }
+        public void deleteCancelledOrders()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public enum OrderStatus

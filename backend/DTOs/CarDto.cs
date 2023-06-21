@@ -13,6 +13,7 @@ namespace backend.DTOs
         public string Model { get; set; }
         public string? RegistrationNumber { get; set; }
         public int? Cost { get; set; }
+        public int? Warranty { get; set; }
         public string? Description { get; set; }
     }
 }

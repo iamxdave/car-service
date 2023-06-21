@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 
 namespace Entities.Models
 {
@@ -13,6 +12,10 @@ namespace Entities.Models
         public string Password { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+
+        public OrderStatus GetOrderStatus(Guid idOrder){
+            throw new NotImplementedException();
+        }
     }
 
 }

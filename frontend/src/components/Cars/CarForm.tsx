@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  CarContext,
-  CarContextType,
+  DataContext,
+  DataContextType,
   UserContext,
   UserContextType,
 } from "../../App";
@@ -11,7 +11,7 @@ import { urlCars, urlWorkshops } from "../../endpoints";
 import { useCookies } from "react-cookie";
 import Workshop from "../../types/Workshop";
 import { useNavigate } from "react-router-dom";
-import OrderType from "../../types/OrderType";
+import OrderType from "../../types/Orders/OrderType";
 
 const CarForm = () => {
   const [formData, setFormData] = useState<Car>({
@@ -21,11 +21,10 @@ const CarForm = () => {
     registrationNumber: "",
   });
   const { user } = useContext(UserContext) as UserContextType;
-  const { updateCars } = useContext(CarContext) as CarContextType;
+  const { updateRepairCar } = useContext(DataContext) as DataContextType;
   const [workshops, setWorkshops] = useState<Workshop[] | null>();
   const [validation, setValidation] = useState("");
   const [cookies] = useCookies(["jwt"]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -35,7 +34,6 @@ const CarForm = () => {
           setWorkshops(response.data);
         }
       })
-      .catch((reason: AxiosError) => {});
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,7 +49,7 @@ const CarForm = () => {
         },
       })
       .then((response: AxiosResponse) => {
-        updateCars([formData], OrderType.Repair);
+        updateRepairCar(response.data);
       })
       .catch((reason: AxiosError) => {
         const msg = (reason.response!.data as { message: string }).message;
@@ -62,7 +60,7 @@ const CarForm = () => {
   };
 
   return (
-    <form className="w-full py-4 px-6 md:px-12 my-12" onSubmit={handleSubmit}>
+    <form className="w-full py-4 px-6 md:px-12 my-6" onSubmit={handleSubmit}>
       <div className="flex mb-6">
         <div className="flex flex-col justify-end w-1/3 px-3">
           <label

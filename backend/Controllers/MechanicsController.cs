@@ -42,26 +42,5 @@ namespace backend.Controllers
 
             return Ok(dtoAvailableMechanics);
         }
-
-        [HttpPut("{idMechanic}")]
-        public async Task<IActionResult> PutMechanic(Guid idMechanic, DateTime date) 
-        {
-            var mechanic = await _service.GetMechanicByIdAsync(idMechanic);
-
-            if(mechanic == null)
-            {
-                return NotFound();
-            }
-            if(mechanic.BookedDates.Any(d => d.Date == date.Date) || date < DateTime.Now)
-            {
-                return Conflict(new{date1 = mechanic.BookedDates.FirstOrDefault(), date2= date});
-            }
-
-            mechanic.BookedDates.Add(date);
-
-            await _service.SaveChangesAsync();
-
-            return Ok(mechanic);
-        }
     }
 }

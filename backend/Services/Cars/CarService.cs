@@ -18,7 +18,7 @@ namespace backend.Services.Cars
         }
         public IQueryable<CarToBuy>? GetServiceCars()
         {
-            return _context.CarToBuys;
+            return _context.CarToBuys.Where(e => !_context.Orders.Any(o => o.IdCar == e.IdCar));
         }
         public async Task<CarToRepair?> GetUserCarByIdAsync(Guid idCar)
         {
@@ -26,7 +26,7 @@ namespace backend.Services.Cars
         }
         public async Task<CarToBuy?> GetServiceCarByIdAsync(Guid idCar)
         {
-            return await _context.CarToBuys.FirstOrDefaultAsync(e => e.IdCar == idCar);
+            return await _context.CarToBuys.Where(e => !_context.Orders.Any(o => o.IdCar == e.IdCar)).FirstOrDefaultAsync(e => e.IdCar == idCar);
         }
     }
 }
