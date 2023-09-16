@@ -9,7 +9,7 @@ import {
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { urlRegister } from "../../endpoints";
 import Credit from "../../types/User";
-import Slogan from "../../assets/slogan.png";
+import Slogan from "../../assets/slogan.jpg";
 
 const SignUp = () => {
   const [formData, setFormData] = useState<Credit>({
@@ -48,9 +48,9 @@ const SignUp = () => {
   };
 
   return (
-    <section className="h-screen flex gap-5 bg-yellow-500 items-center flex-col lg:flex-row">
+    <section className="h-screen flex bg-neutral-900 items-center flex-col lg:flex-row">
       <div
-        className="h-1/2 w-screen md:w-2/3 flex items-center justify-center"
+        className="h-2/3 my-5 py-10 w-screen md:w-2/3 flex items-center justify-center"
         style={{
           backgroundImage: `url(${Slogan})`,
           backgroundRepeat: "no-repeat",
