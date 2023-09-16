@@ -87,6 +87,7 @@ _Login and password for db you can find in docker-compose_
 
 7. Run application in terminal
 ```
+dotnet run
 npm run start
 ```
 <br/>
@@ -109,23 +110,21 @@ npm run start
 
   _The application has home page on which website redirect the user on start._
 
-![homepage](https://github.com/iamxdave/car-service/assets/74014874/62655287-1aa8-45f5-8f06-abbdc05d54a9)
+![homepage](https://github.com/iamxdave/car-service/assets/74014874/0c252f98-3f0e-4258-9888-e962f109b9c3)
 
   _There is also a login and register page that looks similar, here is one of them._
 
-![login](https://github.com/iamxdave/car-service/assets/74014874/b863a3c8-88d1-4117-a1a0-c739078fc61d)
+![login](https://github.com/iamxdave/car-service/assets/74014874/673322a6-e51b-4357-b245-298876abf94d)
 
   _It also alows to track your orders._
 
-![tracking](https://github.com/iamxdave/car-service/assets/74014874/cf8d5274-d436-40a1-8d20-6358d56f213d)
+![tracking](https://github.com/iamxdave/car-service/assets/74014874/6b8d677a-5ca5-47de-83bd-adae739fdb7d)
 
-  _I also recorded some gifs to show design and default functions of the app_
+  _Recorded gif of repairing car order submission_
+  
+  _Sorry for component selection style flickering caused by gif recorder and its quality_
 
-![order1](https://github.com/iamxdave/car-service/assets/74014874/dd39f39d-dc73-4d25-a94b-8fa9133adfd7)
-
-  _And another of ordering process_
-
-![order2](https://github.com/iamxdave/car-service/assets/74014874/271ac438-ae96-428a-b7b8-53308e2cb440)
+![order2](https://github.com/iamxdave/car-service/assets/74014874/741a479a-8530-4ee0-9a34-e70e420a7fe1)
 
 <br/>
 
