@@ -96,11 +96,12 @@ npm run start
 ## How does it work 📔
 <p align="justify">
   The Car Service Application is designed to provide a seamless experience for users seeking automotive solutions. This platform offers a range of features tailored to enhance your car-related needs while prioritizing security and convenience.</br>
-  - User authentication
-  - Cookie based credentials
-  - Data tracking
-  - Data security
 </p>
+
+ - User authentication
+ - Cookie based credentials
+ - Data tracking
+ - Data security
   
 
 <br/>
